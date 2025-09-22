@@ -18,3 +18,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    # wrtiting this to check if github actions work. :)
