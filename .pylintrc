@@ -1,0 +1,11 @@
+[MASTER]
+load-plugins=pylint_cov
+
+[MESSAGES CONTROL]
+disable=C0114,C0115,C0116
+
+[REPORTS]
+output-format=colorized
+
+[PYLINT.COVERAGE]
+min_coverage=80

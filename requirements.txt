@@ -1,0 +1,6 @@
+# List your project dependencies here
+pytest
+pytest-pylint
+pytest-cov
+pylint
+coverage
