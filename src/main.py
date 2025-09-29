@@ -5,7 +5,7 @@ main.py - REPL Interface for IS601 Proj1 (DRY + pylint-friendly)
 from src.calculator import add, subtract, multiply, divide
 
 
-def get_number(prompt: str) -> float | None:
+def get_number(prompt: str) -> float:
     """Safely get a number from the user with validation.
 
     Keeps prompting until a valid float is entered.
