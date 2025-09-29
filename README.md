@@ -7,6 +7,8 @@
 
 ## Usage
 - Run `python main.py` to start the project.
+- Enter the operation to be performed (+, -, *, /)
+- 
 
 ## Features
 - Modular calculator supporting addition, subtraction, multiplication, and division
