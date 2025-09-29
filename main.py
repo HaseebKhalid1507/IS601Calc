@@ -5,18 +5,17 @@ main.py - REPL Interface for IS601 Proj1 (DRY + pylint-friendly)
 from calculator import add, subtract, multiply, divide
 
 
-def get_number(prompt: str) -> float:
+def get_number(prompt: str) -> float | None:
     """Safely get a number from the user with validation.
 
-    Keeps prompting until a valid float is entered. Handles EOF/KeyboardInterrupt
-    by re-raising so the caller can decide how to exit the REPL cleanly.
+    Keeps prompting until a valid float is entered.
+    Returns None if the user interrupts input.
     """
     while True:
         try:
             user_input = input(prompt).strip()
         except (KeyboardInterrupt, EOFError):
-            # propagate to allow clean REPL shutdown in main()
-            raise
+            return None
         try:
             return float(user_input)
         except ValueError:
@@ -49,10 +48,13 @@ def main() -> None:
             print("❌ Unknown operation. Please choose from +, -, *, or /.")
             continue
 
-        try:
-            a = get_number("Enter first number: ")
-            b = get_number("Enter second number: ")
-        except (KeyboardInterrupt, EOFError):
+        a = get_number("Enter first number: ")
+        if a is None:
+            print("\n👋 Goodbye!")
+            break
+
+        b = get_number("Enter second number: ")
+        if b is None:
             print("\n👋 Goodbye!")
             break
 
@@ -61,10 +63,7 @@ def main() -> None:
             result = func(a, b)
             print(f"{a} {symbol} {b} = {result}")
         except ValueError as exc:
-            # Known domain error from calculator functions (e.g. divide by zero)
             print(f"Error: {exc}")
-
-        # NOTE: We intentionally avoid catching broad Exception to satisfy pylint.
 
 
 if __name__ == "__main__":
