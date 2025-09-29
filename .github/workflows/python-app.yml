@@ -23,4 +23,5 @@ jobs:
     - name: Run tests with pytest, and coverage
       run: |
         source .venv/bin/activate
+        export PYTHONPATH=.
         pytest --cov

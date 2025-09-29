@@ -2,7 +2,7 @@
 main.py - REPL Interface for IS601 Proj1 (DRY + pylint-friendly)
 """
 
-from calculator import add, subtract, multiply, divide
+from src.calculator import add, subtract, multiply, divide
 
 
 def get_number(prompt: str) -> float | None:
@@ -33,38 +33,36 @@ def main() -> None:
         "/": ("/", divide),
     }
 
-    while True:
-        try:
+    try:
+        while True:
             op = input("Enter operation (+, -, *, /): ").strip().lower()
-        except (KeyboardInterrupt, EOFError):
-            print("\n👋 Goodbye!")
-            break
 
-        if op in ["quit", "exit", "q"]:
-            print("👋 Goodbye!")
-            break
+            if op in ["quit", "exit", "q"]:
+                print("👋 Goodbye!")
+                break
 
-        if op not in operations:
-            print("❌ Unknown operation. Please choose from +, -, *, or /.")
-            continue
+            if op not in operations:
+                print("❌ Unknown operation. Please choose from +, -, *, or /.")
+                continue
 
-        a = get_number("Enter first number: ")
-        if a is None:
-            print("\n👋 Goodbye!")
-            break
+            a = get_number("Enter first number: ")
+            if a is None:
+                print("\n👋 Goodbye!")
+                break
 
-        b = get_number("Enter second number: ")
-        if b is None:
-            print("\n👋 Goodbye!")
-            break
+            b = get_number("Enter second number: ")
+            if b is None:
+                print("\n👋 Goodbye!")
+                break
 
-        symbol, func = operations[op]
-        try:
-            result = func(a, b)
-            print(f"{a} {symbol} {b} = {result}")
-        except ValueError as exc:
-            print(f"Error: {exc}")
-
+            symbol, func = operations[op]
+            try:
+                result = func(a, b)
+                print(f"{a} {symbol} {b} = {result}")
+            except ValueError as exc:
+                print(f"Error: {exc}")
+    except (KeyboardInterrupt, EOFError):
+        print("\n👋 Goodbye!")
 
 if __name__ == "__main__":
     main()
