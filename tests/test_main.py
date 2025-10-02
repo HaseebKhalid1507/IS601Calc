@@ -5,9 +5,7 @@ These tests exercise all lines/branches of main.py by patching `input()` and, wh
 Run with: `pytest -q`
 """
 
-from types import SimpleNamespace
 import builtins
-import pytest
 
 from src import main
 
