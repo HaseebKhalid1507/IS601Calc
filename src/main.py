@@ -22,7 +22,7 @@ def get_number(prompt: str) -> float:
             print("❌ Invalid number. Please enter a valid numeric value.")
 
 
-def main() -> None:
+def main():
     """Run the calculator REPL. Handles known errors explicitly to satisfy pylint."""
     print("🧮 Simple Calculator (type 'quit' to exit)")
 
