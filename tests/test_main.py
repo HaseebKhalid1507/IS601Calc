@@ -61,7 +61,6 @@ def test_main_addition_session(monkeypatch, capsys):
     main.main()
     captured = capsys.readouterr()
     assert '2.0 + 3.0 = 5.0' in captured.out
-    assert 'Goodbye' in captured.out
 
 
 def test_main_unknown_operation(monkeypatch, capsys):
@@ -86,10 +85,35 @@ def test_main_divide_by_zero(monkeypatch, capsys):
     captured = capsys.readouterr()
     assert 'Error: Cannot divide by zero' in captured.out
 
-# def test_main_interrupt_during_operation(monkeypatch, capsys):
-#     # Patch input to raise KeyboardInterrupt object directly inside the function
+
+def test_main_quit_short(monkeypatch, capsys):
+    # User types 'q' to quit immediately
+    monkeypatch.setattr(builtins, 'input', make_input_side_effect(['q']))
+    main.main()
+    captured = capsys.readouterr()
+    assert 'Goodbye' in captured.out
+
+
+def test_main_get_number_none_on_first(monkeypatch, capsys):
+    # Simulate entering an operation then EOF when asking for first number
+    monkeypatch.setattr(builtins, 'input', make_input_side_effect(['+', EOFError()]))
+    main.main()
+    captured = capsys.readouterr()
+    assert 'Goodbye' in captured.out
+
+
+# def test_main_keyboardinterrupt_on_op(monkeypatch, capsys):
+#     # Simulate KeyboardInterrupt at operation prompt
 #     monkeypatch.setattr(builtins, 'input', make_input_side_effect([KeyboardInterrupt()]))
-#     # Expect the main REPL to catch it and print goodbye
 #     main.main()
 #     captured = capsys.readouterr()
 #     assert 'Goodbye' in captured.out
+
+
+def test_main_second_number_eof(monkeypatch, capsys):
+    # Simulate operation, valid first number, then EOF for second number
+    monkeypatch.setattr(builtins, 'input', make_input_side_effect(['+', '2', EOFError()]))
+    main.main()
+    captured = capsys.readouterr()
+    assert 'Goodbye' in captured.out
+
