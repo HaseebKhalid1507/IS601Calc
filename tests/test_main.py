@@ -1,6 +1,7 @@
 """
 Unit tests for main.py REPL interface.
-These tests exercise all lines/branches of main.py by patching `input()` and, where useful, the calculator functions.
+These tests exercise branches by patching input() and, where useful,
+calculator functions.
 
 Run with: `pytest -q`
 """
@@ -11,14 +12,19 @@ from src import main
 
 
 def make_input_side_effect(responses):
-    """Create a side-effect function for input() that returns successive values or raises exceptions.
+    """Create a side-effect for input() that yields values or raises.
 
-    `responses` is an iterable where each item is either a string to return or an Exception instance to raise.
+    `responses` is an iterable; each item is a string to return or an
+    exception instance to raise.
     """
     iterator = iter(responses)
 
     def _input(_prompt=""):
-        value = next(iterator)
+        try:
+            value = next(iterator)
+        except StopIteration as exc:
+            # If tests forget inputs, raise EOFError to emulate end-of-input
+            raise EOFError from exc
         if isinstance(value, BaseException):
             raise value
         return value
@@ -105,7 +111,7 @@ def test_main_keyboardinterrupt_on_op(monkeypatch, capsys):
 
 
 def test_main_second_number_eof(monkeypatch, capsys):
-    # Simulate operation, valid first number, then EOF for second number
+    # Simulate op, valid first number, then EOF for second number
     monkeypatch.setattr(builtins, 'input', make_input_side_effect(['+', '2', EOFError()]))
     main.main()
     captured = capsys.readouterr()
@@ -118,4 +124,3 @@ def test_main_eof_on_op(monkeypatch, capsys):
     main.main()
     captured = capsys.readouterr()
     assert 'Goodbye' in captured.out
-
