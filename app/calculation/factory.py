@@ -28,3 +28,11 @@ class CalculationFactory:
             raise ValueError(f"Unknown operation: {symbol}")
         op_instance: Operation = op_cls()  # type: ignore[call-arg]
         return Calculation(op=op_instance, a=a, b=b)
+
+    @classmethod
+    def symbol_for(cls, op: Operation) -> str:
+        """Return the symbol for a given Operation instance, or '?' if unknown."""
+        for symbol, op_cls in cls._ops.items():
+            if isinstance(op, op_cls):
+                return symbol
+        return "?"
