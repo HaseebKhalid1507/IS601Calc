@@ -1,5 +1,11 @@
 from typing import Dict, Type
-from app.operation import Operation, AddOperation, SubtractOperation, MultiplyOperation, DivideOperation
+from app.operation import (
+    Operation,
+    AddOperation,
+    SubtractOperation,
+    MultiplyOperation,
+    DivideOperation,
+)
 from .calculation import Calculation
 
 

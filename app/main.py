@@ -39,7 +39,7 @@ def print_help() -> None:
     print(f"Supported operations: {ops}")
 
 
-def main() -> None:
+def main() -> None:  # pylint: disable=too-many-branches
     """Run the OOP calculator REPL with History and CalculationFactory."""
     hist = History()
     print("🧮 OOP Calculator (type 'help' for options, 'exit' to quit)")
@@ -47,7 +47,11 @@ def main() -> None:
     try:
         while True:
             try:
-                cmd = input("Enter command or operation (+, -, *, /, help, history, exit): ").strip().lower()
+                prompt = (
+                    "Enter command or operation (+, -, *, /, "
+                    "help, history, exit): "
+                )
+                cmd = input(prompt).strip().lower()
             except (KeyboardInterrupt, EOFError):
                 print("\n👋 Goodbye!")
                 break

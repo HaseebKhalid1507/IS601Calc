@@ -1,12 +1,11 @@
 import builtins
+from app import main as app_main
 
 
 def run_session(inputs):
-    from app import main as app_main  # import locally to avoid state leaks
-
     it = iter(inputs)
 
-    def fake_input(prompt=""):
+    def fake_input(prompt=""):  # pylint: disable=unused-argument
         try:
             return next(it)
         except StopIteration as exc:  # emulate EOF when inputs run out
@@ -75,8 +74,6 @@ def test_first_number_interrupt(capsys):
 def test_outer_keyboardinterrupt(capsys):
     # Simulate Ctrl-C occurring during help printing (outside the inner input try),
     # so it is caught by the outermost try/except in main().
-    import app.main as app_main
-
     original = app_main.print_help
     try:
         # Replace print_help with a function that raises KeyboardInterrupt
