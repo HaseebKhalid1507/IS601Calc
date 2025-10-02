@@ -39,6 +39,11 @@ def print_help() -> None:
     print(f"Supported operations: {ops}")
 
 
+def _goodbye() -> None:
+    """Centralized goodbye printing to keep coverage consistent across versions."""
+    print("\n👋 Goodbye!")
+
+
 def main() -> None:  # pylint: disable=too-many-branches
     """Run the OOP calculator REPL with History and CalculationFactory."""
     hist = History()
@@ -53,7 +58,7 @@ def main() -> None:  # pylint: disable=too-many-branches
                 )
                 cmd = input(prompt).strip().lower()
             except (KeyboardInterrupt, EOFError):
-                print("\n👋 Goodbye!")
+                _goodbye()
                 break
 
             if cmd in {"exit", "quit", "q"}:
@@ -77,11 +82,11 @@ def main() -> None:  # pylint: disable=too-many-branches
             if cmd in CalculationFactory.supported():
                 a = get_number("Enter first number: ")
                 if a is None:
-                    print("\n👋 Goodbye!")
+                    _goodbye()
                     break
                 b = get_number("Enter second number: ")
                 if b is None:
-                    print("\n👋 Goodbye!")
+                    _goodbye()
                     break
                 try:
                     calc = CalculationFactory.from_symbol(cmd, a, b)
@@ -96,7 +101,7 @@ def main() -> None:  # pylint: disable=too-many-branches
             print("❌ Unknown command/operation. Type 'help' for options.")
 
     except (KeyboardInterrupt, EOFError):
-        print("\n👋 Goodbye!")
+        _goodbye()
 
 
 if __name__ == "__main__":

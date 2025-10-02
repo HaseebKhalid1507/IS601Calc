@@ -6,4 +6,4 @@ class Operation(Protocol):  # pylint: disable=too-few-public-methods
 
     def apply(self, a: float, b: float) -> float:
         """Apply the operation to two numbers and return the result."""
-        ...  # pylint: disable=unnecessary-ellipsis
+        ...  # pragma: no cover  # pylint: disable=unnecessary-ellipsis
