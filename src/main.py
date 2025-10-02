@@ -2,10 +2,11 @@
 main.py - REPL Interface for IS601 Proj1 (DRY + pylint-friendly)
 """
 
+from typing import Optional
 from src.calculator import add, subtract, multiply, divide
 
 
-def get_number(prompt: str) -> float:
+def get_number(prompt: str) -> Optional[float]:
     """Safely get a number from the user with validation.
 
     Keeps prompting until a valid float is entered.
@@ -65,4 +66,4 @@ def main():
         print("\n👋 Goodbye!")
 
 if __name__ == "__main__":
-    main()
+    main()  # pragma: no cover

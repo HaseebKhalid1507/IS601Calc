@@ -20,12 +20,8 @@ def make_input_side_effect(responses):
     iterator = iter(responses)
 
     def _input(_prompt=""):
-        try:
-            value = next(iterator)
-        except StopIteration:
-            # If tests forget to supply enough inputs, raise EOFError to emulate end-of-input
-            raise EOFError
-        if isinstance(value, Exception):
+        value = next(iterator)
+        if isinstance(value, BaseException):
             raise value
         return value
 
@@ -102,17 +98,25 @@ def test_main_get_number_none_on_first(monkeypatch, capsys):
     assert 'Goodbye' in captured.out
 
 
-# def test_main_keyboardinterrupt_on_op(monkeypatch, capsys):
-#     # Simulate KeyboardInterrupt at operation prompt
-#     monkeypatch.setattr(builtins, 'input', make_input_side_effect([KeyboardInterrupt()]))
-#     main.main()
-#     captured = capsys.readouterr()
-#     assert 'Goodbye' in captured.out
+def test_main_keyboardinterrupt_on_op(monkeypatch, capsys):
+    # Simulate KeyboardInterrupt at operation prompt
+    monkeypatch.setattr(builtins, 'input', make_input_side_effect([KeyboardInterrupt()]))
+    main.main()
+    captured = capsys.readouterr()
+    assert 'Goodbye' in captured.out
 
 
 def test_main_second_number_eof(monkeypatch, capsys):
     # Simulate operation, valid first number, then EOF for second number
     monkeypatch.setattr(builtins, 'input', make_input_side_effect(['+', '2', EOFError()]))
+    main.main()
+    captured = capsys.readouterr()
+    assert 'Goodbye' in captured.out
+
+
+def test_main_eof_on_op(monkeypatch, capsys):
+    # Simulate EOFError at operation prompt to hit outer exception handler
+    monkeypatch.setattr(builtins, 'input', make_input_side_effect([EOFError()]))
     main.main()
     captured = capsys.readouterr()
     assert 'Goodbye' in captured.out
