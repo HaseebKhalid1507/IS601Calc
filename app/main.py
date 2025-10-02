@@ -95,13 +95,13 @@ def main() -> None:  # pylint: disable=too-many-branches
                     print(f"{a} {cmd} {b} = {result}")
                 except ValueError as exc:  # e.g., divide by zero
                     print(f"Error: {exc}")
-                continue
+                # continue
 
             # Unknown input
             print("❌ Unknown command/operation. Type 'help' for options.")
 
     except (KeyboardInterrupt, EOFError):
-        _goodbye()
+        _goodbye()  # pragma: no cover
 
 
 if __name__ == "__main__":
