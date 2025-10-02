@@ -1,6 +1,10 @@
 name: Python application
 
-on: [push, pull_request]
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ "**" ]
 
 jobs:
   build:
@@ -20,8 +24,8 @@ jobs:
         source .venv/bin/activate
         pip install -r requirements.txt
 
-    - name: Run tests with pytest, and coverage
+    - name: Run lint, tests, and coverage (100% required)
       run: |
         source .venv/bin/activate
         export PYTHONPATH=.
-        pytest --cov=src --cov-report=term-missing --cov-fail-under=100 tests/
+        pytest --pylint --cov=src --cov-report=term-missing --cov-fail-under=100
