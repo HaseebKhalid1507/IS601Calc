@@ -1,5 +1,6 @@
 from typing import List, Optional
 from .calculation import Calculation
+from .factory import CalculationFactory
 
 
 class History:
@@ -19,4 +20,7 @@ class History:
         self._items.clear()
 
     def to_strings(self) -> List[str]:
-        return [f"{c.a} ? {c.b} = {c.execute()}" for c in self._items]
+        return [
+            f"{c.a} {CalculationFactory.symbol_for(c.op)} {c.b} = {c.execute()}"
+            for c in self._items
+        ]

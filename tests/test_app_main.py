@@ -39,8 +39,8 @@ def test_history_empty_then_add_and_show(capsys):
     assert "(no history yet)" in out
     # calculation echo
     assert "1.0 + 2.0 = 3.0" in out
-    # history format uses '?' placeholder
-    assert "1.0 ? 2.0 = 3.0" in out
+    # history now shows real operation symbol
+    assert "1.0 + 2.0 = 3.0" in out
 
 
 def test_invalid_number_and_interrupt(capsys):

@@ -62,5 +62,21 @@ def test_history_to_strings():
     hist.add(c2)
     strings = hist.to_strings()
     assert len(strings) == 2
-    assert strings[0].startswith("1 ? 1 = ")
-    assert strings[1].startswith("2 ? 3 = ")
+    assert strings[0].startswith("1 + 1 = ")
+    assert strings[1].startswith("2 * 3 = ")
+
+
+def test_symbol_for_operations():
+    assert CalculationFactory.symbol_for(AddOperation()) == "+"
+    assert CalculationFactory.symbol_for(SubtractOperation()) == "-"
+    assert CalculationFactory.symbol_for(MultiplyOperation()) == "*"
+    assert CalculationFactory.symbol_for(DivideOperation()) == "/"
+
+
+def test_symbol_for_unknown_operation():
+    class UnknownOp:  # minimal shape-compatible object
+        # pylint: disable=too-few-public-methods
+        def apply(self, a, b):  # pylint: disable=unused-argument
+            return a  # pragma: no cover (value unused)
+
+    assert CalculationFactory.symbol_for(UnknownOp()) == "?"
