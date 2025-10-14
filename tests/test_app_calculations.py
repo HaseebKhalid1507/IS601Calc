@@ -1,6 +1,13 @@
 import pytest
 from app.calculation import Calculation, CalculationFactory, History
-from app.operation import AddOperation, SubtractOperation, MultiplyOperation, DivideOperation
+from app.operation import (
+    AddOperation,
+    SubtractOperation,
+    MultiplyOperation,
+    DivideOperation,
+    PowerOperation,
+    RootOperation,
+)
 
 @pytest.mark.parametrize(
     "op,a,b,expected",
@@ -18,7 +25,7 @@ def test_calculation_execute(op, a, b, expected):
 
 def test_factory_supported():
     sup = CalculationFactory.supported()
-    assert set(sup) == set(["+", "-", "*", "/"])  # order not enforced
+    assert set(sup) == set(["+", "-", "*", "/", "^", "root"])  # order not enforced
 
 
 @pytest.mark.parametrize(
@@ -28,6 +35,8 @@ def test_factory_supported():
         ("-", 5, 3, 2),
         ("*", 4, 2, 8),
         ("/", 9, 3, 3),
+        ("^", 2, 3, 8),
+        ("root", 2, 9, 3),
     ],
 )
 def test_factory_from_symbol(symbol, a, b, expected):
@@ -37,7 +46,7 @@ def test_factory_from_symbol(symbol, a, b, expected):
 
 def test_factory_unknown_symbol():
     with pytest.raises(ValueError):
-        CalculationFactory.from_symbol("^", 2, 2)
+        CalculationFactory.from_symbol("%", 2, 2)
 
 
 def test_history_add_and_last_and_clear():
@@ -71,6 +80,8 @@ def test_symbol_for_operations():
     assert CalculationFactory.symbol_for(SubtractOperation()) == "-"
     assert CalculationFactory.symbol_for(MultiplyOperation()) == "*"
     assert CalculationFactory.symbol_for(DivideOperation()) == "/"
+    assert CalculationFactory.symbol_for(PowerOperation()) == "^"
+    assert CalculationFactory.symbol_for(RootOperation()) == "root"
 
 
 def test_symbol_for_unknown_operation():

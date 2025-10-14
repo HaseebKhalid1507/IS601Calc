@@ -1,22 +1,5 @@
-import builtins
 from app import main as app_main
-
-
-def run_session(inputs):
-    it = iter(inputs)
-
-    def fake_input(prompt=""):  # pylint: disable=unused-argument
-        try:
-            return next(it)
-        except StopIteration as exc:  # emulate EOF when inputs run out
-            raise EOFError() from exc
-
-    orig = builtins.input
-    try:
-        builtins.input = fake_input
-        app_main.main()
-    finally:
-        builtins.input = orig
+from .utils import run_session
 
 
 def test_help_and_exit(capsys):

@@ -5,6 +5,8 @@ from app.operation import (
     SubtractOperation,
     MultiplyOperation,
     DivideOperation,
+    PowerOperation,
+    RootOperation,
 )
 from .calculation import Calculation
 
@@ -15,6 +17,8 @@ class CalculationFactory:
         "-": SubtractOperation,
         "*": MultiplyOperation,
         "/": DivideOperation,
+        "^": PowerOperation,
+        "root": RootOperation,
     }
 
     @classmethod

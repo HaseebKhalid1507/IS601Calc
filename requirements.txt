@@ -4,3 +4,5 @@ pytest-pylint
 pytest-cov
 pylint
 coverage
+pandas
+python-dotenv

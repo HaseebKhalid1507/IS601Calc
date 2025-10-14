@@ -3,6 +3,8 @@ from .add import AddOperation
 from .subtract import SubtractOperation
 from .multiply import MultiplyOperation
 from .divide import DivideOperation
+from .power import PowerOperation
+from .root import RootOperation
 
 __all__ = [
     "Operation",
@@ -10,4 +12,6 @@ __all__ = [
     "SubtractOperation",
     "MultiplyOperation",
     "DivideOperation",
+    "PowerOperation",
+    "RootOperation",
 ]
