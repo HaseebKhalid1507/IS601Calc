@@ -1,9 +1,6 @@
-import builtins
-
-import importlib
 import pytest
 from app.config import load_settings
-from app import main as app_main
+from .utils import run_session, has_pandas
 
 
 def test_load_settings_env(monkeypatch):
@@ -14,21 +11,6 @@ def test_load_settings_env(monkeypatch):
     assert s.csv_path == "test_hist.csv"
 
 
-def run_session(inputs):
-    it = iter(inputs)
-
-    def fake_input(prompt=""):  # pylint: disable=unused-argument
-        try:
-            return next(it)
-        except StopIteration as exc:  # emulate EOF when inputs run out
-            raise EOFError() from exc
-
-    orig = builtins.input
-    try:
-        builtins.input = fake_input
-        app_main.main()
-    finally:
-        builtins.input = orig
 
 
 def test_repl_new_commands(capsys, tmp_path, monkeypatch):
@@ -50,29 +32,14 @@ def test_repl_new_commands(capsys, tmp_path, monkeypatch):
     out = capsys.readouterr().out
     assert "2.0 ^ 3.0 = 8.0" in out
     assert "2.0 root 9.0 = 3.0" in out
-    try:
-        importlib.import_module("pandas")
-        has_pandas = True
-    except ModuleNotFoundError:  # pragma: no cover - env dependent
-        has_pandas = False
-    if has_pandas:
+    if has_pandas():
         assert "Saved to" in out
         assert "Loaded from" in out
     else:
         assert "Error saving:" in out
         assert "Error loading:" in out
 
-
-# pylint: disable=duplicate-code
-def _has_pandas():
-    try:
-        importlib.import_module("pandas")
-        return True
-    except ModuleNotFoundError:  # pragma: no cover - env dependent
-        return False
-
-
-@pytest.mark.skipif(not _has_pandas(), reason="pandas not installed")
+@pytest.mark.skipif(not has_pandas(), reason="pandas not installed")
 def test_repl_auto_save_on_calculation(tmp_path, monkeypatch, capsys):
     # Enable auto-save and set path
     csv_path = tmp_path / "auto.csv"
